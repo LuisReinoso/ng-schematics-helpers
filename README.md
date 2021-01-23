@@ -13,7 +13,7 @@ npm install --save ng-schematics-helpers
 Import required helper function.
 
 ```typescript
-import { findClassBySelector } from ng-schematics-helpers'
+import { findClassBySelector } from 'ng-schematics-helpers'
 ```
 
 #### findClassBySelector
@@ -26,7 +26,7 @@ findClassBySelector(selector, sourcePath, tree);
 
 This will return:
 
-```JSON
+```
 {
   className: 'NavComponent',
   classPath: '/projects/pet-project/src/nav-component/nav.component.ts'
