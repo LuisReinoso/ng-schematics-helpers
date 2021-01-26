@@ -4,7 +4,7 @@ export function findClassBySelector(
   selector: string,
   sourcePath: string,
   tree: Tree
-): { className: string; classPath: string } | undefined {
+): { className: string; classPath: string; modulePath: string; moduleName: string } | undefined {
   let srcDir = tree.getDir(sourcePath)
   let dirsToVisit = srcDir.subdirs.map((dirName) => srcDir.path + '/' + dirName)
 
@@ -47,7 +47,36 @@ export function findClassBySelector(
     return
   }
 
-  return { className, classPath: fileWithSelectorPath }
+  let moduleExportRegex = new RegExp('exports:[.\\s\\S]*(' + className + ')[.\\s\\S]*]', '')
+  const moduleNameRegex = /class\s([a-zA-Z$_]\w*[Module])/
+  let modulePath = undefined
+  let moduleName = undefined
+
+  let dirModulePath = tree.getDir(fileWithSelectorPath.split('/').slice(0, -1).join('/'))
+
+  while ((dirModulePath && dirModulePath.path !== null) || (!modulePath && dirModulePath)) {
+    let dir = dirModulePath
+
+    const posibleModuleFiles = dir.subfiles.filter((fileName) => fileName.includes('module.ts'))
+    if (posibleModuleFiles.length > 0) {
+      posibleModuleFiles.forEach((possibleModuleFile) => {
+        const hasExport = moduleExportRegex.test(
+          tree.read(`${dir.path}/${possibleModuleFile}`)?.toString()
+        )
+
+        if (hasExport) {
+          modulePath = `${dir.path}/${possibleModuleFile}`
+          moduleName = tree
+            .read(`${dir.path}/${possibleModuleFile}`)
+            ?.toString()
+            .match(moduleNameRegex)?.[1]
+        }
+      })
+    }
+    dirModulePath = dirModulePath.parent
+  }
+
+  return { className, classPath: fileWithSelectorPath, modulePath, moduleName }
 }
 
 /*

@@ -43,6 +43,65 @@ describe('find class info by selector', () => {
     expect(classInfo).toEqual({
       className: 'AppNavComponent',
       classPath: `${sourcePath}/app/app-nav/app-nav.component.ts`,
+      modulePath: undefined,
+    })
+  })
+
+  it('it should return undefined given not exist selector', () => {
+    const classInfo = findClassBySelector('app-menu', sourcePath, tree)
+    expect(classInfo).toBeUndefined()
+  })
+})
+
+describe('find class info by selector contain module', () => {
+  const runner = new SchematicTestRunner('schematics', collectionPath)
+  const projectRootName = 'projects'
+  const projectName = 'find-class-by-selector'
+  const sourcePath = `/${projectRootName}/${projectName}/src`
+
+  const workspaceOptions = {
+    name: 'workspace',
+    newProjectRoot: projectRootName,
+    version: '1',
+  }
+  const appOptions = {
+    name: projectName,
+  }
+
+  let tree: UnitTestTree
+
+  beforeEach(async () => {
+    tree = await runner
+      .runExternalSchematicAsync('@schematics/angular', 'workspace', workspaceOptions)
+      .toPromise()
+    tree = await runner
+      .runExternalSchematicAsync('@schematics/angular', 'application', appOptions, tree)
+      .toPromise()
+    tree = await runner
+      .runExternalSchematicAsync(
+        '@schematics/angular',
+        'module',
+        { name: 'testing', path: `${sourcePath}/app` },
+        tree
+      )
+      .toPromise()
+    tree = await runner
+      .runExternalSchematicAsync(
+        '@schematics/angular',
+        'component',
+        { path: `${sourcePath}/app/testing`, name: 'app-nav', export: true },
+        tree
+      )
+      .toPromise()
+  })
+
+  it('it should return className given selector', () => {
+    const classInfo = findClassBySelector('app-nav', sourcePath, tree)
+    expect(classInfo).toEqual({
+      className: 'AppNavComponent',
+      classPath: `${sourcePath}/app/testing/app-nav/app-nav.component.ts`,
+      modulePath: `${sourcePath}/app/testing/testing.module.ts`,
+      moduleName: 'TestingModule',
     })
   })
 
