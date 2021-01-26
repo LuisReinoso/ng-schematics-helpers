@@ -29,7 +29,9 @@ This will return:
 ```
 {
   className: 'NavComponent',
-  classPath: '/projects/pet-project/src/nav-component/nav.component.ts'
+  classPath: '/projects/pet-project/src/app/nav-component/nav.component.ts',
+  modulePath: '/projects/pet-project/src/app/nav-component/nav.module.ts',
+  moduleName: 'NavModule',
 }
 ```
 Check out docs or testing files for more information.
