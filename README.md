@@ -21,7 +21,7 @@ import { findClassBySelector } from 'ng-schematics-helpers'
 Search an class name by selector `findClassBySelector`
 
 ```typescript
-findClassBySelector(selector, sourcePath, tree);
+findClassBySelector(selector: string, sourcePath: string, tree: Tree)
 ```
 
 This will return:
@@ -34,6 +34,33 @@ This will return:
   moduleName: 'NavModule',
 }
 ```
+
+#### updateDeclarations
+
+Update declarations inside selected module
+
+```typescript
+updateDeclarations({
+  tree: Tree
+  modulePathToEdit: string
+  componentNameToInsert: string
+  componentPathToInsert: string
+})
+```
+
+#### updateImports
+
+Update imports inside selected module
+
+```typescript
+updateImports({
+  tree: Tree
+  modulePathToEdit: string
+  moduleNameToInsert: string
+  modulePathToInsert: string
+})
+```
+
 Check out docs or testing files for more information.
 
 ### License
