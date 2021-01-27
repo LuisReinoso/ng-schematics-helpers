@@ -6,8 +6,7 @@
     "angular",
     "schematics"
   ],
-  "main": "dist/ng-schematics-helpers.umd.js",
-  "module": "dist/ng-schematics-helpers.es5.js",
+  "main": "dist/lib/ng-schematics-helpers.js",
   "typings": "dist/types/ng-schematics-helpers.d.ts",
   "files": [
     "dist"
@@ -85,6 +84,7 @@
   "devDependencies": {
     "@commitlint/cli": "11.0.0",
     "@commitlint/config-conventional": "11.0.0",
+    "@rollup/plugin-node-resolve": "^11.1.0",
     "@schematics/angular": "^11.1.1",
     "@types/jest": "26.0.19",
     "@types/node": "^14.14.14",
@@ -109,7 +109,6 @@
     "rollup": "^2.35.1",
     "rollup-plugin-commonjs": "^9.1.8",
     "rollup-plugin-json": "^3.1.0",
-    "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "rollup-plugin-typescript2": "^0.29.0",
     "semantic-release": "17.3.0",
